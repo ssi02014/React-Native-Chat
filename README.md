@@ -180,7 +180,7 @@ const Input = forwardRef(
       
     return (
       <Container>
-        <Label isFocused={isFocused}>{label}</Label>
+        (...)
         <StyledTextInput
           ref={ref}
           isFocused={isFocused}
@@ -205,6 +205,26 @@ const Input = forwardRef(
     );
   }
 );
+```
+
+<br />
+
+## 👨🏻‍💻 키보드 감추기
+- TextInput에 입력 도중 다른 곳을 터치하면 키보드가 사라지는데, 이는 사용자 편의를 위한 일반적인 애플리케이션의 동장 방식입니다.
+- 리액트 네이티브에서 **TouchableWithoutFeedback** 컴포넌트와 **Keyboard API**를 사용해서 위 동장 방식을 구현할 수 있습니다.
+- 위에 두 컴포넌트는 대신, 위치에 따라 키보드가 Input 컴포넌트를 가리는 문제를 해결하지는 못합니다.
+- **react-native-keyboard-aware-scroll-view** 라이브러리를 이용하면 위 문제를 해결할 수 있습니다. 뿐만 아니라 focus가 있는 TextInput 컴포넌트의 위치로 자동 스크롤되는 기능 등 Input 컴포넌트에 필요한 기능들을 제공합니다.
+
+```javascript
+  //import 
+  import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
+  <KeyboardAwareScrollView
+    contentContainerStyle={{ flex: 1 }}
+    extraScrollHeight={20} //스크롤되는 위치를 조정할 때 사용
+  >
+    (...)
+  </KeyboardAwareScrollView>
 ```
 
 <br />
