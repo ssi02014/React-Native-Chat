@@ -57,15 +57,15 @@ const Input = forwardRef(
           onBlur={() => {
             setIsFocused(false);
             onBlur();
-          }}
+          }} //input에 포커스가 풀릴때 호출되는 콜백
           placeholder={placeholder}
-          secureTextEntry={isPassword}
-          returnKeyType={returnKeyType}
-          maxLength={maxLength}
-          autoCapitalize="none"
-          autoCorrect={false}
+          secureTextEntry={isPassword} //문자를 감추는 기능
+          returnKeyType={returnKeyType} //리턴 키를 레이블로 설정
+          maxLength={maxLength} //입력 할 수있는 최대 문자 수를 제한
+          autoCapitalize="none" //자동 대문자 변환
+          autoCorrect={false} //자동 수정
           textContentType="none" //iOS
-          underlineColorAndroid="transparent" //Android
+          underlineColorAndroid="transparent" //Android TextInput 밑줄 의 색상
         />
       </Container>
     );
