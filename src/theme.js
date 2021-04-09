@@ -5,6 +5,7 @@ const colors = {
   grey_1: "#a6a6a6",
   red: "#e84118",
   blue: "#3679fe",
+  beige: "#cc9A73",
 };
 
 export const theme = {
@@ -15,4 +16,7 @@ export const theme = {
   inputPlaceholder: colors.grey_1,
   inputBorder: colors.grey_1,
   errorText: colors.red,
+  buttonBackground: colors.beige,
+  buttonTitle: colors.white,
+  buttonUnfilledTitle: colors.beige,
 };

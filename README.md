@@ -246,6 +246,17 @@ const Input = forwardRef(
 ```
 <br />
 
+## 👨🏻‍💻 Button 컴포넌트
+- **TouchableOpacity**는 터치 이벤트(onPress)를 사용할 수 있는 View
+
+```javascript
+  const Container = styled.TouchableOpacity`
+    (...)
+  `;
+```
+
+<br />
+
 🔖
 
 ### 🏃
