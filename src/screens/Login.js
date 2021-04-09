@@ -1,10 +1,10 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components/native";
-import { Button } from "react-native";
-import { Image, Input } from "../components";
+import { Image, Input, Button } from "../components";
 import { images } from "../utils/images";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { removeWhitespace, validateEmail } from "../utils/common";
+import { useEffect } from "react";
 
 const Container = styled.View`
   flex: 1;
@@ -27,7 +27,17 @@ const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [disabled, setDisabled] = useState(true);
   const passwordRef = useRef();
+
+  useEffect(() => {
+    setDisabled(!(email && password && !errorMessage));
+
+  }, [email, password, errorMessage]);
+
+  const _handleLoginButtonPress = () => {
+
+  };
 
   const _handleEmailChange = (email) => {
     const changedEmail = removeWhitespace(email);
@@ -61,13 +71,22 @@ const Login = ({ navigation }) => {
           label="Password"
           value={password}
           onChangeText={_handlePasswordChange}
-          onSubmitEditing={() => {}}
+          onSubmitEditing={_handleLoginButtonPress}
           placeholder="Password"
           returnKeyType="done"
           isPassword
         />
-        {/* <Button title="Signup" onPress={() => navigation.navigate("Signup")} /> */}
         <ErrorText>{errorMessage}</ErrorText>
+        <Button 
+          title="Login" 
+          onPress={_handleLoginButtonPress}
+          disabled={disabled}
+        />
+        <Button 
+          title="Sign up with email" 
+          onPress={() => navigation.navigate('Signup')}
+          isFilled={false}
+        />
       </Container>
     </KeyboardAwareScrollView>
   );
