@@ -43,7 +43,9 @@
 ```javascript
     //Firebase Setting
     1. 프로젝트 설정 > 일반 > 내 앱에서 '웹'을 선택하고 앱을 추가
+    
     2. 프로젝트 설정 > 일반 > 내 앱에서 'Firebase SDK snippet'에서 Firebase 설정값을 확인한다.
+
     3. 프로젝트 루트 디렉터리에 firebase.json 파일을 생성 후 2번에서 확인한 코드를 넣는다.
          - firebase.json은 중요한 파일이기 때문에 .gitignore에 추가한다.
 
@@ -59,7 +61,9 @@
     }
 
     4. 인증, 데이터베이스, 스토리지 설정한다.
+
     5. expo install firebase 를 통해 라이브러리를 설치한다.
+
     6. firebase.js 파일을 생성한다.
 
     //src/utils/firebase.js
@@ -124,7 +128,7 @@
 - 스토리지에 파일을 업로드하고 파일 정보에서 이름을 클릭하면 해당 파일의 url을 얻을 수 있습니다.
 
 ```javascript
-    1. src/utils/images.js 생성
+    //1. src/utils/images.js 생성
 
     const prefix =
         "https://firebasestorage.googleapis.com/v0/b/react-native-chat-65246.appspot.com/o";
@@ -133,7 +137,8 @@
         logo: `${prefix}/logo.png?alt=media`,
     };
 
-    2. src/App.js (_loadAssets 메서드 수정)
+    //2. src/App.js (_loadAssets 메서드 수정)
+
     const _loadAssets = async () => {
         const imageAssets = cacheImages([
             require("../assets/splash.png"),
@@ -145,7 +150,8 @@
         await Promise.all([...imageAssets, ...fontAssets]);
     };
 
-    3. Firebase 스토리지 Rules 수정
+    //3. Firebase 스토리지 Rules 수정
+
     rules_version = '2';
     service firebase.storage {
       match /b/{bucket}/o {
