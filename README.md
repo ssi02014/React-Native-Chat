@@ -275,6 +275,14 @@ const Input = forwardRef(
 ```
 
 <br />
+
+## 👨🏻‍💻 화면 스크롤
+- Signup Page에서 기기의 크기에 따라 화면의 위아래가 잘려서 보이는 문제가 있는데 이는, KeyboardAwareScrollView 컴포넌트에 contentContainerStyle을 이용하여 "flex: 1"을 스타일에 적용시키면서 발생한 문제
+- flex:1 스타일을 설정하면 컴포넌트가 차지하는 영역이 부모 컴포넌트 영역만큼 한정되므로, 컴포넌트의 크기에 따라 화면을 넘어가서 스크롤이 생성되도록 flex:1을 제거해야 한다.
+
+```javascript
+```
+<br />
 🔖
 
 ### 🏃
