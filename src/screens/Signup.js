@@ -29,6 +29,7 @@ const Signup = () => {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [disabled, setDisabled] = useState(true);
+  const [photoUrl, setPhotoUrl] = useState(images.photo);
 
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -66,7 +67,12 @@ const Signup = () => {
   return (
     <KeyboardAwareScrollView extraScrollHeight={20}>
       <Container>
-        <Image rounded url={images.photo} showButton />
+        <Image
+          rounded
+          url={photoUrl}
+          showButton
+          onChangeImage={(url) => setPhotoUrl(url)}
+        />
         <Input
           label="Name"
           value={name}
