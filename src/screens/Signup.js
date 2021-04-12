@@ -66,7 +66,7 @@ const Signup = () => {
   return (
     <KeyboardAwareScrollView extraScrollHeight={20}>
       <Container>
-        <Image rounded url={images.photo} />
+        <Image rounded url={images.photo} showButton />
         <Input
           label="Name"
           value={name}
