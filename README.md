@@ -257,6 +257,24 @@ const Input = forwardRef(
 
 <br />
 
+## 👨🏻‍💻 노치 디자인
+- react-native-safe-area-context 라이브러리가 제공하는 useSafeAreaInsets Hook 함수를 이용하면 노치디자인을 해결할 수 있다.
+- useSafeAreaInsets의 장점은 iOS뿐만아니라 안드로이드에서도 적용 가능한 padding 값을 전달한다.
+
+```javascript
+  //import 
+  import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+  //padding top과 bottom의 값을 useSafeAreaInsets 함수가 알려주는 값만큼 설정한다.
+  const Container = styled.View`
+    (...)
+    padding: 0 20px;
+    padding-top: ${({ insets: { top } }) => top}px;
+    padding-bottom: ${({ insets: { bottom } }) => bottom}px;
+  `;
+```
+
+<br />
 🔖
 
 ### 🏃
