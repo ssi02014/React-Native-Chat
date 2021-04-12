@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 import { Image, Input, Button } from "../components";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { removeWhitespace, validateEmail } from "../utils/common";
+import { images } from "../utils/images";
 
 const Container = styled.View`
   flex: 1;
@@ -32,21 +33,26 @@ const Signup = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
+  const didMoundRef = useRef();
 
   useEffect(() => {
-    let _errorMessage = "";
-    if (!name) {
-      _errorMessage = "Please enter your name";
-    } else if (!validateEmail(email)) {
-      _errorMessage = "Please enter your email";
-    } else if (password.length < 6) {
-      _errorMessage = "The password must contail 6 characters at least";
-    } else if (password !== passwordConfirm) {
-      _errorMessage = "Passwords need to match";
+    if (didMoundRef.current) {
+      let _errorMessage = "";
+      if (!name) {
+        _errorMessage = "Please enter your name";
+      } else if (!validateEmail(email)) {
+        _errorMessage = "Please enter your email";
+      } else if (password.length < 6) {
+        _errorMessage = "The password must contail 6 characters at least";
+      } else if (password !== passwordConfirm) {
+        _errorMessage = "Passwords need to match";
+      } else {
+        _errorMessage = "";
+      }
+      setErrorMessage(_errorMessage);
     } else {
-      _errorMessage = "";
+      didMoundRef.current = true;
     }
-    setErrorMessage(_errorMessage);
   }, [email, name, password, passwordConfirm]);
 
   useEffect(() => {
@@ -60,7 +66,7 @@ const Signup = () => {
   return (
     <KeyboardAwareScrollView extraScrollHeight={20}>
       <Container>
-        <Image rounded />
+        <Image rounded url={images.photo} />
         <Input
           label="Name"
           value={name}
