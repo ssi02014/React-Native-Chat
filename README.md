@@ -276,13 +276,87 @@ const Input = forwardRef(
 
 <br />
 
-## 👨🏻‍💻 화면 스크롤
-- Signup Page에서 기기의 크기에 따라 화면의 위아래가 잘려서 보이는 문제가 있는데 이는, KeyboardAwareScrollView 컴포넌트에 contentContainerStyle을 이용하여 "flex: 1"을 스타일에 적용시키면서 발생한 문제
-- flex:1 스타일을 설정하면 컴포넌트가 차지하는 영역이 부모 컴포넌트 영역만큼 한정되므로, 컴포넌트의 크기에 따라 화면을 넘어가서 스크롤이 생성되도록 flex:1을 제거해야 한다.
+## 👨🏻‍💻 권한 요청, 사진의 정보 가져오기
+### 🏃권한 요청(iOS)
+- expo-image-picker 라이브러리를 통해서 기기의 사진첩에 접근해서 선택된 사진의 정보를 가져올 수 있다.
+- iOS에서는 사진첩에 접근하기 위해 사용자에게 권한을 요청하는 과정이 필요하므로, 권한을 요청하는 부분을 추가해야 한다. 안드로드에서는 특별한 설정 없이 사진에 접근할 수 있다.
 
 ```javascript
+  //install
+  expo install expo-image-picker
+
+  //import 
+  import * as ImagePicker from "expo-image-picker";
+  import * as Permissions from "expo-permissions";
+
+  //iOS 권한 요청
+  useEffect(() => {
+    async () => {
+      try {
+        if (Platform.OS === "ios") {
+          const { status } = await Permissions.askAsync(
+            Permissions.CAMERA_ROLL
+          );
+          if (status !== "granted") {
+            Alert.alert(
+              "Photo Permission",
+              "Please turn on the camera roll permissions"
+            );
+          }
+        }
+      } catch (e) {
+        Alert.alert("Photo Permission Error", e.message);
+      }
+    };
+  }, []);
 ```
 <br />
+
+### 🏃사진 입력받기
+- 사진 변경 버튼을 클릭하면 호출되는 함수에서 기기의 사진에 접근하기 위해 호출되는 라이브러리 함수는 다음과 같은 값들을 포함한 객체를 파라미터로 전달받는다.
+  1. mediaTypes: 조회하는 자료의 타입
+  2. allowsEditing: 이미지 선택 후 편집 단계 진행 여부
+  3. aspect: 안드로이드 전용 옵션으로 이미지 편집시 사각형의 비율([x, y])
+  4. quality: 0 ~ 1 사이의 값을 받으며 압축 품질을 의미 (1: 최대 품질)
+
+```javascript
+  const _handelEditButton = async () => {
+      try {
+        const result = await ImagePicker.launchCameraAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.images,
+          allowsEditing: true,
+          aspect: [1, 1],
+          quality: 1,
+        });
+        if (!result.cancelled) {
+          onChangeImage(result.uri);
+        }
+      } catch (e) {
+        Alert.alert("Photo Error", e.message);
+      }
+    };
+```
+<br />
+
+- 기기의 사진에 접근하는 함수는 결과를 반환하는데, cancelled 값을 통해 선택 여부를 확인할 수 있다. 만약 사용자가 사진을 선택했다면 반환된 결과의 uri를 통해 선택된 사진의 주소를 알 수 있다.
+
+```json
+  //상단에 result의 반환 값
+  {
+    "cancelled": true,
+  }
+
+  {
+    "cancelled": false,
+    "height": 000,
+    "type": "image",
+    "uri": "file:../...jpg",
+    "width": 000,
+  }
+```
+
+<br />
+
 🔖
 
 ### 🏃
