@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { Platform, Alert } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -42,11 +45,46 @@ const PhotoButton = ({ onPress }) => {
   );
 };
 
-const Image = ({ url, imageStyle, rounded, showButton }) => {
+const Image = ({ url, imageStyle, rounded, showButton, onChangeImage }) => {
+  useEffect(() => {
+    async () => {
+      try {
+        if (Platform.OS === "ios") {
+          const { status } = await Permissions.askAsync(
+            Permissions.CAMERA_ROLL
+          );
+          if (status !== "granted") {
+            Alert.alert(
+              "Photo Permission",
+              "Please turn on the camera roll permissions"
+            );
+          }
+        }
+      } catch (e) {
+        Alert.alert("Photo Permission Error", e.message);
+      }
+    };
+  }, []);
+
+  const _handelEditButton = async () => {
+    try {
+      const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+      if (!result.cancelled) {
+        onChangeImage(result.uri);
+      }
+    } catch (e) {
+      Alert.alert("Photo Error", e.message);
+    }
+  };
   return (
     <Container>
       <StyledImage source={{ uri: url }} style={imageStyle} rounded={rounded} />
-      {showButton && <PhotoButton />}
+      {showButton && <PhotoButton onPress={_handelEditButton} />}
     </Container>
   );
 };
@@ -54,6 +92,7 @@ const Image = ({ url, imageStyle, rounded, showButton }) => {
 Image.defaultProps = {
   rounded: false,
   showButton: false,
+  onChangeImage: () => {},
 };
 
 Image.propTypes = {
@@ -61,6 +100,7 @@ Image.propTypes = {
   imageStyle: PropTypes.object,
   rounded: PropTypes.bool,
   showButton: PropTypes.bool,
+  onChangeImage: PropTypes.func,
 };
 
 export default Image;
