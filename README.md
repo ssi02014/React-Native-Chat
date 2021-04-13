@@ -1,5 +1,5 @@
-# 💻 React-Native-TodoApp
-### React-Native-TodoApp 저장소
+# 💻 React-Native-Chat
+### React-Native-Chat 저장소
 
 <br />
 
