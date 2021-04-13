@@ -357,6 +357,153 @@ const Input = forwardRef(
 
 <br />
 
+## 👨🏻‍💻 로그인, 회원가입 기능 구현
+### 🏃 로그인
+- 파이어베이스를 이용한 이메일과 비밀번호를 이용해 인증받는 함수는  **signInWithEmailAndPassword** 입니다.
+
+```javascript
+  //utils/firebase.js
+  export const login = async ({ email, password }) => {
+    const { user } = await Auth.signInWithEmailAndPassword(email, password);
+    return user;
+  };
+```
+
+<br />
+
+```javascript
+  //screens/Login.js
+  import { login } from "../utils/firebase";
+
+  const _handleLoginButtonPress = async () => {
+    try {
+      const user = await login({ email, password });
+      Alert.alert("Login Success", user.email);
+    } catch (e) {
+      Alert.alert("Login Error", e.message);
+    }
+  };
+```
+<br />
+
+### 🏃 회원가입
+- 파이어베이스를 이용한 이메일과 비밀번호를 이용해 사용자를 생성하는 함수는 **createUserWithEmailAndPassword** 입니다.
+
+```javascript
+//utils/firebase.js
+
+  export const signup = async ({ email, password, name, photoUrl }) => {
+    const { user } = await Auth.createUserWithEmailAndPassword(email, password);
+    return user;
+  };
+```
+<br />
+
+```javascript
+  //screens/Signup.js
+  import { signup } from "../utils/firebase";
+
+  const _handleSignupButtonPress = async () => {
+    try {
+      const user = await signup({ email, password, name, photoUrl });
+      console.log(user);
+      Alert.alert("Signup Success", user.email);
+    } catch (e) {
+      Alert.alert("Signup Error", e.message);
+    } 
+  };
+```
+
+<br />
+
+## 👨🏻‍💻 Spinner(with ContextAPI)
+### 🏃 Spinner Component
+- Spinner 컴포넌트는 로그인 혹은 회원가입이 진행되는 동안 데이터를 수정하거나 버튼을 추가로 클릭하는 일이 발생하지 않도록 방지하는 기능을 한다.
+- Spinner 컴포넌트는 리액트 네이티브에서 제공하는 **AcitivityIndicator** 컴포넌트를 이용해서 쉽게 만들 수 있다.
+- Spinner 컴포넌트를 AuthStack 내비게이션의 하위 컴포넌트로 사용하면 내비게이션을 포함한 화면 전체를 차지할 수 없습니다. 내비게이션을 포함한 화면 전체를 감싸기 위해서는 navigations 폴더의 index.js에서 AuthStack 내비게이션과 같은 위치에 Spinner 컴포넌트를 사용해야 됩니다.
+
+```javascript
+  import React, { useContext } from 'react';
+  import { ActivityIndicator } from 'react-native';
+  import styled, { ThemeContext } from 'styled-components/native';
+
+  const Container = styled.View`
+    (...)
+  `;
+
+  const Spinner = () => {
+      const theme = useContext(ThemeContext);
+      return (
+          <Container>
+              <ActivityIndicator size={'large'} color={theme.spinnerIndicator} />
+          </Container>
+      )
+  };
+
+  export default Spinner;
+```
+<br />
+
+- Spinner 컴포넌트를 AuthStack 내비게이션의 하위 컴포넌트로 사용하면 내비게이션을 포함한 화면 전체를 차지할 수 없습니다. 내비게이션을 포함한 화면 전체를 감싸기 위해서는 navigations 폴더의 index.js에서 AuthStack 내비게이션과 같은 위치에 Spinner 컴포넌트를 사용해야 됩니다.
+
+```javascript
+  (...)
+  const Navigation = () => {
+    const { inProgress } = useContext(ProgressContext);
+
+    return (
+      <NavigationContainer>
+        <AuthStack />
+        {inProgress && <Spinner />}
+      </NavigationContainer>
+    );
+  };
+  (...)
+```
+<br />
+
+### 🏃 Context API
+- creatContext 함수를 이용해 Context를 생성하고, Provider 컴포넌트의 value에 Spinner 컴포넌트의 렌더링 상태를 관리할 inPrgress 상태 변수와 상태를 변경할 수 있는 함수를 전달합니다.
+
+```javascript
+  //contexts/Progress.js
+
+  import React, { useState, createContext } from 'react';
+
+  //Context 생성
+  const ProgressContext = createContext({
+    inProgress: false,
+    spinner: () => {},
+  });
+
+  //ProgressProvider
+  const ProgressProvider = ({ children }) => {
+    const [inProgress, setInProgress] = useState(false);
+
+    const spinner = {
+      start: () => setInProgress(true),
+      stop: () => setInProgress(false),
+    };
+    const value = { inProgress, spinner };
+
+    return (
+      <ProgressContext.Provider value={value}>
+          {children}
+      </ProgressContext.Provider>
+    );
+  };
+
+  export { ProgressContext, ProgressProvider };
+```
+<br />
+
+```javascript
+  //contexts/index.js
+  import {ProgressContext, ProgressProvider } from './Progress';
+  export { ProgressContext, ProgressProvider }; 
+```
+<br />
+
 🔖
 
 ### 🏃

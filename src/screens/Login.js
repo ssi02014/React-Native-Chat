@@ -42,7 +42,6 @@ const Login = ({ navigation }) => {
   }, [email, password, errorMessage]);
 
   const _handleLoginButtonPress = async () => {
-    console.log(email, password);
     try {
       spinner.start();
       const user = await login({ email, password });
