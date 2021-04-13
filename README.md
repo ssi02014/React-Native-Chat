@@ -504,6 +504,18 @@ const Input = forwardRef(
 ```
 <br />
 
+```javascript
+  //src/App.js
+  <ThemeProvider theme={theme}>
+    <ProgressProvider>
+      <StatusBar barStyle="light-content" />
+      <Navigation />
+    </ProgressProvider>
+  </ThemeProvider>
+```
+
+<br />
+
 🔖
 
 ### 🏃
