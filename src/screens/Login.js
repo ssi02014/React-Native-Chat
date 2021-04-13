@@ -5,6 +5,8 @@ import { images } from "../utils/images";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { removeWhitespace, validateEmail } from "../utils/common";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Alert } from "react-native";
+import { login } from "../utils/firebase";
 
 const Container = styled.View`
   flex: 1;
@@ -37,7 +39,15 @@ const Login = ({ navigation }) => {
     setDisabled(!(email && password && !errorMessage));
   }, [email, password, errorMessage]);
 
-  const _handleLoginButtonPress = () => {};
+  const _handleLoginButtonPress = async () => {
+    console.log(email, password);
+    try {
+      const user = await login({ email, password });
+      Alert.alert("Login Success", user.email);
+    } catch (e) {
+      Alert.alert("Login Error", e.message);
+    }
+  };
 
   const _handleEmailChange = (email) => {
     const changedEmail = removeWhitespace(email);
