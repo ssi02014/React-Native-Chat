@@ -7,7 +7,8 @@ import { ThemeProvider } from "styled-components/native";
 import { theme } from "./theme";
 import { images } from "./utils/images";
 import Navigation from "./navigations";
-
+import { ProgressProvider } from './contexts';
+ 
 const cacheImages = (images) => {
   return images.map((image) => {
     if (typeof image === "string") {
@@ -37,8 +38,10 @@ const App = () => {
 
   return isReady ? (
     <ThemeProvider theme={theme}>
-      <StatusBar barStyle="light-content" />
-      <Navigation />
+      <ProgressProvider>
+        <StatusBar barStyle="light-content" />
+        <Navigation />
+      </ProgressProvider>
     </ThemeProvider>
   ) : (
     <AppLoading
