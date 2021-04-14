@@ -516,6 +516,72 @@ const Input = forwardRef(
 
 <br />
 
+## 👨🏻‍💻 Stack 내비게이션 속 Tab 내비게이션의 헤더 변경
+- MainStack 내비게이션에서 MainTab 내비게이션이 화면으로 사용되는 Screen 컴포넌트의 name은 "Main"으로 설정되어 있다. 헤더의 타이틀과 관련해 특별히 설정하지 않으면 Screen 컴포넌트의 name에 설정된 값이 헤더의 타이틀로 되기 때문에, 프로필 화면과 채널 목록 모두 'Main'으로 타이틀이 나타난다.
+```javascript
+  <Stack.Navigator
+    initialRouteName="Main"
+    (...)
+  >   
+    <Stack.Screen name="Main" component={MainTab} />
+    (...)
+  </Stack.Navigator>
+```
+<br />
+
+- MainTab 내비게이션은 MainStack 내비게이션의 화면으로 사용되었기 때문에 다른 화면들과 마찬가지로 props를 통해 navigation과 route를 전달 받는다.
+- route에 포함된 state의 값은 다음과 같다
+  1. index: 현재 렌더링 되는 화면의 인덱스
+  2. routeNames: 화면으로 사용되는 Navigator 컴포넌트에서 Screen 컴포넌트들의 name 속성을 배열로 갖는다.
+  3. type: 현재 화면으로 사용되는 Navigator 컴포넌트의 타입이며, MainTab 내비게이션은 탭 내비게이션이기 때문에 'tab' 값을 갖는다.
+
+```json
+  //route의 state
+  {
+    "index": 0,
+    "routeNames": [
+      "Channel List",
+      "Profile",
+    ],
+    "type": "tab",
+    ...
+  }
+```
+<br />
+
+```javascript
+  //MainTab
+  useEffect(() => {
+    const titles = route.state?.routeNames || ['Channels'];
+    const index = route.state?.index || 0;
+    navigation.setOptions({ headerTitle: titles[index ]});
+  }, [route]);
+```
+
+<br />
+
+- 하지만 위에 방식대로 하면 route의 state에 직접 접근해서 발생하는 경고메시지가 뜬다. 이걸 해결하려면 **getFocusedRouteNameFromRoute** 메서드를 사용하면 된다.
+- 🔖 관련 이슈: https://github.com/Alchemist85K/my-first-react-native/discussions/26
+
+```javascript
+  useEffect(() => {
+      const screenName = getFocusedRouteNameFromRoute(route) || 'Channels';
+
+      navigation.setOptions({ 
+        headerTitle: screenName,
+      });
+  }, [route]);
+```
+
+<br />
+
+## 👨🏻‍💻 Setting a timer for a long period of time, ... 오류
+- 🔖 관련 이슈: https://github.com/Alchemist85K/my-first-react-native/discussions/28
+- /node_modules/react-native/Libraries/Core/Timers/JSTimers.js
+- MAX_TIMER_DURATION_MS 라는 변수 값을 60 * 1000 에서 10000 * 1000으로 변경
+
+<br />
+
 🔖
 
 ### 🏃
