@@ -1,9 +1,11 @@
 import * as firebase from "firebase";
 import config from "../../firebase.json";
+import 'firebase/firestore';
 
 const app = firebase.initializeApp(config);
 
 const Auth = app.auth();
+export const DB = firebase.firestore();
 
 const uploadImage = async uri => {
   const blob = await new Promise((resolve, reject) => {
@@ -61,3 +63,18 @@ export const updateUserPhoto = async photoUrl => {
   await user.updateProfile({ photoURL: storageUrl });
   return { name: user.displayName, email: user.email, photoUrl: user.photoURL };
 };
+
+export const createChannel = async ({ title, description }) => {
+  const newChannelRef = DB.collection('channels').doc();
+  const id = newChannelRef.id;
+  const newChannel = {
+    id,
+    title,
+    description,
+    createAt: Date.now(),
+  };
+  await newChannelRef.set(newChannel);
+  return id;
+};
+
+

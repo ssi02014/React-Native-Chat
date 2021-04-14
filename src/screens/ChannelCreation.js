@@ -1,7 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import styled from "styled-components/native";
 import { Input, Button } from '../components';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Alert } from 'react-native';
+import { ProgressContext } from '../contexts';
+import { createChannel } from '../utils/firebase';
 
 const Container = styled.View`
     flex: 1;
@@ -21,6 +24,7 @@ const ErrorText = styled.Text`
 `;
 
 const ChannelCreation = ({ navigation }) => {
+    const { spinner } = useContext(ProgressContext);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -36,7 +40,17 @@ const ChannelCreation = ({ navigation }) => {
         setErrorMessage(title.trim() ? '' : 'Please enter the title.');
     };
 
-    const _handleCreateButtonPress = () => {};
+    const _handleCreateButtonPress = async () => {
+        try {
+            spinner.start();
+            const id = await createChannel({ title, description });
+            navigation.replace('Channel', { id, title });
+        } catch (e) {
+            Alert.alert('Creating Error', e.message);
+        } finally {
+            spinner.stop();
+        }
+    };
 
     return (
         <KeyboardAwareScrollView
