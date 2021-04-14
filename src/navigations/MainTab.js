@@ -27,7 +27,7 @@ const MainTab = ({ navigation, route }) => {
         navigation.setOptions({ 
             headerTitle: screenName,
             headerRight: () => {
-                screenName === 'Channels' && (
+                return screenName === 'Channels' && (
                     <MaterialIcons 
                         name="add"
                         size={26}
