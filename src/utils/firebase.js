@@ -43,3 +43,7 @@ export const signup = async ({ email, password, name, photoUrl }) => {
   });
   return user;
 };
+
+export const logout = async () => {
+  return await Auth.signOut();
+};

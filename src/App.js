@@ -7,7 +7,7 @@ import { ThemeProvider } from "styled-components/native";
 import { theme } from "./theme";
 import { images } from "./utils/images";
 import Navigation from "./navigations";
-import { ProgressProvider } from './contexts';
+import { ProgressProvider, UserProvider } from './contexts';
  
 const cacheImages = (images) => {
   return images.map((image) => {
@@ -38,10 +38,12 @@ const App = () => {
 
   return isReady ? (
     <ThemeProvider theme={theme}>
-      <ProgressProvider>
-        <StatusBar barStyle="light-content" />
-        <Navigation />
-      </ProgressProvider>
+      <UserProvider>
+        <ProgressProvider>
+          <StatusBar barStyle="light-content" />
+          <Navigation />
+        </ProgressProvider>
+      </UserProvider>
     </ThemeProvider>
   ) : (
     <AppLoading
