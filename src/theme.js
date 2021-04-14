@@ -28,4 +28,5 @@ export const theme = {
   tabActiveColor: colors.beige,
   tabInacitveColor: colors.grey_1,
   buttonLogout: colors.red,
+  inputDisabledBackground: colors.grey_0,
 };
