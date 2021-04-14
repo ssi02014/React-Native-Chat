@@ -463,7 +463,7 @@ const Input = forwardRef(
 <br />
 
 ### 🏃 Context API
-- creatContext 함수를 이용해 Context를 생성하고, Provider 컴포넌트의 value에 Spinner 컴포넌트의 렌더링 상태를 관리할 inPrgress 상태 변수와 상태를 변경할 수 있는 함수를 전달합니다.
+- createContext 함수를 이용해 Context를 생성하고, Provider 컴포넌트의 value에 Spinner 컴포넌트의 렌더링 상태를 관리할 inPrgress 상태 변수와 상태를 변경할 수 있는 함수를 전달합니다.
 
 ```javascript
   //contexts/Progress.js
