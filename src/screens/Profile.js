@@ -26,7 +26,7 @@ const Profile = () => {
     return (
         <Container>
             <Text style={{ fontSize: 24 }}>Profile</Text>
-            <Button title="logout" onPress={_handleLogoutButtonPress} />
+            <Button title="Logout" onPress={_handleLogoutButtonPress} />
         </Container>
     )
 };
