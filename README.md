@@ -582,6 +582,30 @@ const Input = forwardRef(
 
 <br />
 
+## 👨🏻‍💻 데이터베이스
+- 파이어베이스에서 제공하는 파이어스토어는 NoSQL 문서 중심의 데이터베이스이다.
+- SQL 데이터베이스와 달리 테이블이나 행이 없고 컬렉션, 문서, 필드로 구성된다.
+  1. 컬렉션은 문서의 컨테이너 역할을 하며, 모든 문서는 항상 컬렉션에 저장된다.
+  2. 문서는 파이어스토어의 저장 단위로 값이 있는 필드를 갖는다. 문서의 가장 큰 특징은 컬렉션을 필드로 가질 수 있다.
+- 파이어스토어는 일반적인 데이터베이스와 달리 데이터베이스의 내용이 수정되면 실시간으로 변경된 내용을 알 수 있다.
+- 컬렉션과 문서는 항상 유일한 ID를 갖고 있어야 한다는 규칙이 있다.
+
+![1](https://user-images.githubusercontent.com/64779472/114672004-a44de180-9d3f-11eb-9646-eaa072f40f2c.PNG)
+
+```
+  //파이어스토어 보안 규칙 수정
+  rules_version = '2';
+    service cloud.firestore {
+      match /databases/{database}/documents {
+        match /channels/{channel} {
+          allow read, write: if request.auth.uid != null;
+        }
+      }
+    }
+```
+
+<br />
+
 🔖
 
 ### 🏃
