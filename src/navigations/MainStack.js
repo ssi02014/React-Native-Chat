@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { ThemeContext } from "styled-components/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Channel, ChannelCreation } from "../screens";
+import MainTab from './MainTab';
 
 const Stack = createStackNavigator();
 
@@ -10,13 +11,15 @@ const MainStack = () => {
 
     return (
         <Stack.Navigator
+            initialRouteName="Main"
             screenOptions={{
                 headerTitleAlign: "center",
                 cardStyle: { backgroundColor: theme.backgroundColor },
                 headerTintColor: theme.headerTintColor,
                 headerBackTitleVisible: false,
             }}
-        >
+        >   
+            <Stack.Screen name="Main" component={MainTab} />
             <Stack.Screen name="Channel Creation" component={ChannelCreation} />
             <Stack.Screen name="Channel" component={Channel} />
         </Stack.Navigator>
