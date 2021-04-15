@@ -606,6 +606,73 @@ const Input = forwardRef(
 
 <br />
 
-🔖
+## 👨🏻‍💻 FlatList
+- 지금까지 많은 양의 데이터를 렌더링할 때 ScrollView 컴포넌트를 이용해 화면이 넘어가도록 스크롤이 생성되어 확인할 수 있도록 만들었습니다.
+- FlatList컴포넌트는 ScrollView 컴포넌트와 같은 역할을 하는데, ScrollView 컴포넌트는 렌더링해야 하는 모든 데이터를 한번에 렌더링합니다. 즉, 데이터의 양을 알고 있을 때 사용하는 것이 좋고, 데이터가 매우 많으면 렌더링 속도가 느려지고 메모리 사용량이 증가하는 등 성능이 저하됩니다.
+- 그에반해, FlatList는 화면에 적절한 양의 데이터만 렌더링하고 스크롤의 이동에 맞춰 필요한 부분을 추가적으로 렌더링하는 특징이 있습니다.
+- FlatList에는 기본적으로 3가지 속성이 있습니다.
+  1. data: 처음 렌더링할 항목의 데이터를 배열로 전달한다.
+  2. renderItem: 전달된 배열의 항목을 이용해 렌더링하는 함수를 작성해야 한다.
+  3. keyExtractor: key를 추가하기 위해 고유한 값을 반환하는 함수를 전달해야 한다.
+  
+<br />
 
-### 🏃
+```js
+  <FlatList
+    keyExtractor={item => item['id'].toString()}
+    data={channels}
+    renderItem={({ item }) => {
+        return (
+            <Item item={item} onPress={_handleItemPress} />
+        )
+    }}
+    windowSize={3}
+  />
+```
+
+<br />
+
+### 🏃 windowSize
+- FlatList에서 렌더링 되는 데이터의 양을 조절하고 싶다면 windowSize 속성을 추가해서 값을 원하는 값으로 설정하면 된다. 
+- windowSize의 값을 작은 값으로 변경하면 렌더링되는 데이터가 줄어들어 메모리의 소비를 줄이고 성능을 향상 시킬 수 있지만, 빠르게 스크롤하는 상황에서 미리 렌더링되지 않은 부분은 순간적으로 빈 내용이 나타날 수 있다는 단점이 있다.
+
+<br />
+
+```js
+  <FlatList
+    (...)
+    windowSize={3}
+  />
+```
+
+<br />
+
+### 🏃 React.Memo
+- React.Memo는 useMemo Hook 함수와 비슷하지만, 불필요한 함수의 재연산을 방지하는 useMemo와 달리 컴포넌트의 리렌더링을 방지한다는 차이가 있다.
+- React.Memo는 컴포넌트를 감싸는 것으로 간단히 적용할 수 있다.
+- React.Memo를 사용하면 Item 컴포넌트는 props가 변경될 때까지 리렌더링되지 않는다.
+
+<br />
+
+```js
+const Item = React.memo(({ item: { id, title, description, createdAt }, onPress }) => {
+  const theme = useContext(ThemeContext);
+  console.log(`Item ${id}`);
+
+  return (
+    <ItemContainer onPress={() => onPress({ id, title })}>
+        <ItemTextContainer>
+            <ItemTitle>{title}</ItemTitle>
+            <ItemDescription>{description}</ItemDescription>
+        </ItemTextContainer>
+        <ItemTime>{createdAt}</ItemTime>
+        <MaterialIcons 
+            name="keyboard-arrow-right"
+            size={24}
+            color={theme.listIcon}
+        />
+    </ItemContainer>
+  );
+```
+
+<br />
