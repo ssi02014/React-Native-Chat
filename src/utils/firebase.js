@@ -71,7 +71,7 @@ export const createChannel = async ({ title, description }) => {
     id,
     title,
     description,
-    createAt: Date.now(),
+    createdAt: Date.now(),
   };
   await newChannelRef.set(newChannel);
   return id;
