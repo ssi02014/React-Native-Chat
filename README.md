@@ -676,3 +676,27 @@ const Item = React.memo(({ item: { id, title, description, createdAt }, onPress 
 ```
 
 <br />
+
+## 👨🏻‍💻 채널 데이터 수신
+- firebase의 Cloud Firestore에서 실시간 데이터를 받아오기 위해서는 onSnapshop 메서드를 이용하여 데이터를 수신할 수 있습니다.
+- **onSnapshop** 메서드는 수신 대기 상태로 있다가 데이터베이스에 문서가 추가되거나 수정될 때마다 지정된 함수가 호출됩니다.
+- 이때, 오름차순, 내림차순은 **orderBy** 메서드를 이용해서 할 수 있습니다.
+
+<br />
+
+```js
+  useEffect(() => {
+    const unsubscribe = DB.collection('channels')
+      .orderBy('createdAt', 'desc')
+      .onSnapshot(snapshot => {
+        const list = [];
+
+        snapshot.forEach(doc => {
+          list.push(doc.data());
+        });
+        setChannels(list);
+      });
+
+    return () => unsubscribe();
+  }, []);
+```

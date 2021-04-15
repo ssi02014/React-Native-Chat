@@ -62,17 +62,15 @@ const ChannelList = ({ navigation }) => {
 
     useEffect(() => {
         const unsubscribe = DB.collection('channels')
-          .orderBy('createdAt', 'desc')
-          .onSnapshot(snapshot => {
+        .orderBy('createdAt', 'desc')
+        .onSnapshot(snapshot => {
             const list = [];
 
             snapshot.forEach(doc => {
-
-                console.log(doc)
-              list.push(doc.data());
+                list.push(doc.data());
             });
             setChannels(list);
-          });
+        });
     
         return () => unsubscribe();
       }, []);
