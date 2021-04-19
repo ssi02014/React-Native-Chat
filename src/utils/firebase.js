@@ -1,29 +1,29 @@
 import * as firebase from "firebase";
 import config from "../../firebase.json";
-import 'firebase/firestore';
+import "firebase/firestore";
 
 const app = firebase.initializeApp(config);
 
 const Auth = app.auth();
 export const DB = firebase.firestore();
 
-const uploadImage = async uri => {
+const uploadImage = async (uri) => {
   const blob = await new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.onload = function () {
       resolve(xhr.response);
     };
     xhr.onerror = function (e) {
-      reject(new TypeError('Network request failed'));
+      reject(new TypeError("Network request failed"));
     };
-    xhr.responseType = 'blob';
-    xhr.open('GET', uri, true);
+    xhr.responseType = "blob";
+    xhr.open("GET", uri, true);
     xhr.send(null);
   });
 
   const user = Auth.currentUser;
   const ref = app.storage().ref(`/profile/${user.uid}/photo.png`);
-  const snapshot = await ref.put(blob, { contentType: 'image/png' });
+  const snapshot = await ref.put(blob, { contentType: "image/png" });
 
   blob.close();
   return await snapshot.ref.getDownloadURL();
@@ -36,7 +36,7 @@ export const login = async ({ email, password }) => {
 
 export const signup = async ({ email, password, name, photoUrl }) => {
   const { user } = await Auth.createUserWithEmailAndPassword(email, password);
-  const storageUrl = photoUrl.startsWith('https')
+  const storageUrl = photoUrl.startsWith("https")
     ? photoUrl
     : await uploadImage(photoUrl);
   await user.updateProfile({
@@ -55,9 +55,9 @@ export const getCurrentUser = () => {
   return { uid, name: displayName, email, photoUrl: photoURL };
 };
 
-export const updateUserPhoto = async photoUrl => {
+export const updateUserPhoto = async (photoUrl) => {
   const user = Auth.currentUser;
-  const storageUrl = photoUrl.startsWith('https')
+  const storageUrl = photoUrl.startsWith("https")
     ? photoUrl
     : await uploadImage(photoUrl);
   await user.updateProfile({ photoURL: storageUrl });
@@ -65,7 +65,7 @@ export const updateUserPhoto = async photoUrl => {
 };
 
 export const createChannel = async ({ title, description }) => {
-  const newChannelRef = DB.collection('channels').doc();
+  const newChannelRef = DB.collection("channels").doc();
   const id = newChannelRef.id;
   const newChannel = {
     id,
@@ -77,4 +77,13 @@ export const createChannel = async ({ title, description }) => {
   return id;
 };
 
-
+export const createMessage = async ({ channelId, message }) => {
+  return await DB.collection("channels")
+    .doc(channelId)
+    .collection("messages")
+    .doc(message._id)
+    .set({
+      ...message,
+      createdAt: Date.now(),
+    });
+};
