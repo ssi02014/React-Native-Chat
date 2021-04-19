@@ -700,3 +700,65 @@ const Item = React.memo(({ item: { id, title, description, createdAt }, onPress 
     return () => unsubscribe();
   }, []);
 ```
+
+<br />
+
+## 👨🏻‍💻 react-native-gifted-chat
+- 채팅 화면에서 사용할 수 있는 기능을 다양하게 제공하는 react-native-gifted-chat 라이브러리
+- react-native-gifted-chat 라이브러리의 GiftedChat 컴포넌트는 다양한 설정이 가능하도록 많은 속성을 제공한다.
+  1. 입력된 내용을 설정된 사용자의 정보 및 자동으로 생성된 ID와 함께 전달 하는 기능
+  2. 전송 버튼을 수정하는 기능
+  3. 스크롤의 위치에 따라 스크롤 위치를 변경하는 버튼 렌더링
+
+<br />
+
+```js
+  <Container>
+    <GiftedChat
+      listViewProps={{
+        style: { backgroundColor: theme.background },
+      }}
+      placeholder="Enter a Message"
+      messages={messages}
+      user={{ _id: uid, name, avatar: photoUrl }}
+      onSend={_handleMessageSend}
+      alwaysShowSend={true}
+      textInputProps={{
+        autoCapitalize: "none",
+        autoCorrect: false,
+        textContentType: "none",
+        underlineColorAndroid: "transparent",
+      }}
+      multiline={false}
+      renderUsernameOnMessage={true}
+      scrollToBottom={true}
+      renderSend={(props) => <SendButton {...props} />}
+    />
+  </Container>
+```
+
+<br />
+
+- user에 다음과 같은 형태로 사용자의 정보를 입력해두면 onSend에 정의한 함수가 호출될 때 입력된 메시지와 사용자의 정보를 포함한 객체를 전달한다.
+
+```
+  User {
+    _id: string | number;
+    name: string;
+    avatar: string | renderFunction;
+  }
+```
+
+<br />
+
+```
+  Message {
+    _id: string | number;
+    text: string;
+    createdAt: Date | number;
+    user: User;
+    ...
+  }
+```
+
+<br />
